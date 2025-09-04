@@ -2,7 +2,7 @@
 
 High-visibility Salesforce operations console that surfaces governor limit consumption, Flow execution health, CI/CD deployment status, and real-time performance alerts in one admin-only workspace.
 
-**Status:** Reference implementation. Deploy to scratch, sandbox, or production orgs. **Last Updated:** 16 Jul 2025 (PT).
+**Status:** Reference implementation. Deploy to scratch, sandbox, or production orgs. **Last Updated:** 4 Sep 2025 (PT).
 
 ---
 
