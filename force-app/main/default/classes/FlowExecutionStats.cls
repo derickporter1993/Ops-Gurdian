@@ -14,7 +14,7 @@ public with sharing class FlowExecutionStats {
                    MAX(Run_Time__c) lastRun
             FROM Flow_Execution__c
             GROUP BY Flow_Name__c
-            ORDER BY COUNT(Id) DESC
+            ORDER BY runs DESC
             LIMIT :Math.max(1, limitSize)
         ];
         
