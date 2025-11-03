@@ -49,10 +49,13 @@ export class PollingManager {
 
   /**
    * Internal method to start the timer if the page is visible.
+   * Clears any existing timer first to prevent race conditions.
    * @private
    */
   _startTimer() {
-    if (!this.timer && this.isRunning && document.visibilityState === "visible") {
+    // Clear any existing timer first to prevent leaks
+    this._clearTimer();
+    if (this.isRunning && document.visibilityState === "visible") {
       this.timer = setInterval(() => this.callback(), this.intervalMs);
     }
   }
