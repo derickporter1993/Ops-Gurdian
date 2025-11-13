@@ -1,5 +1,6 @@
 import { LightningElement, track } from "lwc";
 import topFlows from "@salesforce/apex/FlowExecutionStats.topFlows";
+import PollingManager from "c/pollingManager";
 
 export default class FlowExecutionMonitor extends LightningElement {
   @track rows = [];
@@ -9,19 +10,27 @@ export default class FlowExecutionMonitor extends LightningElement {
     { label: "Faults", fieldName: "faults", type: "number" },
     { label: "Last Run", fieldName: "lastRun", type: "date" },
   ];
-  timer;
+  pollingManager = null;
+
   connectedCallback() {
+    this.pollingManager = new PollingManager(() => this.load(), 60000);
+    this.pollingManager.setupVisibilityHandling();
     this.load();
-    this.timer = setInterval(() => this.load(), 60000);
+    this.pollingManager.start();
   }
+
   disconnectedCallback() {
-    if (this.timer) clearInterval(this.timer);
+    if (this.pollingManager) {
+      this.pollingManager.cleanup();
+    }
   }
+
   async load() {
     try {
       this.rows = await topFlows({ limitSize: 20 });
     } catch (e) {
-      /* eslint-disable no-console */ console.error(e);
+      /* eslint-disable no-console */
+      console.error(e);
     }
   }
 }
